@@ -123,7 +123,6 @@ export default function Home() {
         </div>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link href="/cua-hang" className="gradient-jotun text-white px-6 py-3 rounded-2xl font-bold">Bắt đầu mua sắm</Link>
-          <Link href="/dashboard" className="text-sm text-slate-400 hover:underline px-2 py-3">Dành cho admin → Dashboard</Link>
         </div>
       </div>
     </div>
