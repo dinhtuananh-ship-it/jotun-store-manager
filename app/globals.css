@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+body { @apply bg-slate-100 text-slate-800 antialiased; }
+
+.glass { @apply bg-white/80 backdrop-blur-xl border border-white/60 shadow-card; }
+.card-hover { transition: all .3s cubic-bezier(.4,0,.2,1); }
+.card-hover:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 20px 50px -12px rgba(0,61,165,.3); }
+
+.gradient-jotun { background: linear-gradient(135deg, #003DA5 0%, #1a5fd7 45%, #00b0f0 100%); }
+.gradient-gold { background: linear-gradient(135deg, #FFC72C, #ff9d00); }
+.text-shimmer {
+  background: linear-gradient(110deg, #003DA5 20%, #00b0f0 40%, #FFC72C 60%, #003DA5 80%);
+  background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer { to { background-position: -200% center; } }
+
+.scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-jotun-300 rounded-full; }
+
+@media print { .no-print { display: none !important; } }
