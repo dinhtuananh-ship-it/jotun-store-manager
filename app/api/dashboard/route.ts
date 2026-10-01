@@ -19,8 +19,10 @@ export async function GET() {
     chart: FALLBACK_CHART, top: FALLBACK_TOP, mode: 'mock'
   });
   try {
+    // Mọi mốc thời gian đều theo ngày Việt Nam (UTC+7) để tháng/ngày/biểu đồ khớp nhau tuyệt đối
     const rev = await sql()`select coalesce(sum(total),0)::int as revenue, coalesce(sum(profit),0)::int as profit, count(*)::int as orders
-      from orders where created_at >= date_trunc('month', now()) and status in ('Hoàn thành','Đang giao')`;
+      from orders where (created_at at time zone 'Asia/Ho_Chi_Minh')::date >= date_trunc('month', (now() at time zone 'Asia/Ho_Chi_Minh')::date)
+      and status in ('Hoàn thành','Đang giao')`;
     // Mốc ngày theo giờ Việt Nam (UTC+7) — khớp với những gì admin thấy, không lệch múi giờ server
     const vn = await sql()`select (now() at time zone 'Asia/Ho_Chi_Minh')::date::text as today`;
     const todayKey = String((vn as any)[0].today).slice(0, 10); // 'YYYY-MM-DD'
