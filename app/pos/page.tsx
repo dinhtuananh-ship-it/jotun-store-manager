@@ -16,6 +16,7 @@ export default function POS() {
   const [cart, setCart] = useState<Record<string, number>>({});
   const [customer, setCustomer] = useState('Khách lẻ');
   const [payment, setPayment] = useState('Tiền mặt');
+  const [discount, setDiscount] = useState(5);
   const [done, setDone] = useState<string | null>(null);
   const [err, setErr] = useState('');
   const [paying, setPaying] = useState(false);
@@ -27,6 +28,9 @@ export default function POS() {
 
   const cartItems = Object.entries(cart).map(([id, qty]) => ({ ...products.find((p: any) => String(p.id) === String(id)), qty })).filter(x => x.id);
   const total = cartItems.reduce((s, it: any) => s + it.price * it.qty, 0);
+  const pct = Math.min(100, Math.max(0, Number(discount) || 0));
+  const factor = (100 - pct) / 100;
+  const totalAfter = Math.round(total * factor);
 
   const add = (id: string) => setCart(c => ({ ...c, [id]: (c[id] || 0) + 1 }));
   const sub = (id: string) => setCart(c => { const n = { ...c }; n[id]--; if (n[id] <= 0) delete n[id]; return n; });
@@ -35,11 +39,11 @@ export default function POS() {
     if (!cartItems.length) return;
     setErr(''); setPaying(true);
     try {
-      // Giá đã trừ chiết khấu thầu 5% để doanh thu Tổng quan khớp số tiền thực thu
+      // Giá đã trừ chiết khấu % admin nhập để doanh thu Tổng quan khớp số tiền thực thu
       const res = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source: 'pos', customer_name: customer, payment,
-          note: 'Bán tại quầy (CK thầu 5%)',
-          items: cartItems.map((i: any) => ({ product_id: i.id, product_name: i.name, qty: i.qty, price: Math.round(i.price * 0.95) })) }) });
+          note: `Bán tại quầy (CK ${pct}%)`,
+          items: cartItems.map((i: any) => ({ product_id: i.id, product_name: i.name, qty: i.qty, price: Math.round(i.price * factor) })) }) });
       const j = await res.json();
       if (!res.ok || j.ok === false) throw new Error(j.error || 'Lưu đơn thất bại');
       setDone(j.code || 'DH-MOI');
@@ -89,11 +93,15 @@ export default function POS() {
         </div>
         <div className="glass rounded-2xl p-5 h-fit sticky top-4">
           <div className="font-extrabold text-lg flex items-center gap-2"><ScanLine size={18}/> Hóa đơn hiện tại</div>
-          <div className="grid grid-cols-2 gap-2 mt-3 no-print">
-            <input value={customer} onChange={e => setCustomer(e.target.value)} placeholder="Tên khách" className="border rounded-xl px-3 py-2 text-sm" />
+          <div className="grid grid-cols-3 gap-2 mt-3 no-print">
+            <input value={customer} onChange={e => setCustomer(e.target.value)} placeholder="Tên khách" className="border rounded-xl px-3 py-2 text-sm col-span-1" />
             <select value={payment} onChange={e => setPayment(e.target.value)} className="border rounded-xl px-3 py-2 text-sm">
               <option>Tiền mặt</option><option>Chuyển khoản</option><option>Công nợ</option><option>Quẹt thẻ</option>
             </select>
+            <label className="flex items-center gap-1 border rounded-xl px-2 py-2 text-sm bg-amber-50" title="Chiết khấu % giảm giá cho khách">
+              <span className="text-xs font-bold text-amber-700 whitespace-nowrap">CK%</span>
+              <input type="number" min={0} max={100} value={discount} onChange={e => setDiscount(Number(e.target.value))} className="w-full bg-transparent outline-none font-bold text-sm" />
+            </label>
           </div>
           <div className="mt-3 space-y-2 max-h-[320px] overflow-auto scrollbar-thin">
             {cartItems.length === 0 && <div className="text-center text-slate-400 text-sm py-8">Giỏ trống — chạm vào sản phẩm để thêm 🪣</div>}
@@ -111,11 +119,11 @@ export default function POS() {
           </div>
           <div className="border-t mt-3 pt-3 space-y-1 text-sm">
             <div className="flex justify-between"><span>Tạm tính</span><b>{formatVND(total)}</b></div>
-            <div className="flex justify-between"><span>Chiết khấu thầu (5%)</span><b className="text-emerald-600">-{formatVND(total * 0.05)}</b></div>
-            <div className="flex justify-between text-lg font-extrabold"><span>Tổng thu</span><span className="text-jotun-700">{formatVND(total * 0.95)}</span></div>
+            <div className="flex justify-between"><span>Chiết khấu ({pct}%)</span><b className="text-emerald-600">-{formatVND(total - totalAfter)}</b></div>
+            <div className="flex justify-between text-lg font-extrabold"><span>Tổng thu</span><span className="text-jotun-700">{formatVND(totalAfter)}</span></div>
           </div>
           <button onClick={checkout} disabled={!cartItems.length || paying} className="mt-3 w-full gradient-jotun text-white py-3.5 rounded-2xl font-extrabold text-lg hover:scale-[1.02] transition disabled:opacity-40 no-print">
-            {paying ? '⏳ Đang lưu đơn...' : `💳 Thanh toán • ${formatVND(total * 0.95)}`}
+            {paying ? '⏳ Đang lưu đơn...' : `💳 Thanh toán • ${formatVND(totalAfter)}`}
           </button>
           <button onClick={() => setCart({})} className="mt-2 w-full text-xs text-slate-400 flex items-center justify-center gap-1 no-print"><Trash2 size={12}/> Xóa giỏ</button>
         </div>

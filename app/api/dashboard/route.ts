@@ -15,11 +15,15 @@ const FALLBACK_TOP = [{ name: 'Jotaplast 18L', qty: 342 }, { name: 'Majestic 5L'
 export async function GET() {
   if (!hasDb()) return NextResponse.json({
     revenue: 75850000, profit: 17400000, orders: 5, pending: 2, lowStock: 2,
+    todayRevenue: 5200000, todayOrders: 3,
     chart: FALLBACK_CHART, top: FALLBACK_TOP, mode: 'mock'
   });
   try {
     const rev = await sql()`select coalesce(sum(total),0)::int as revenue, coalesce(sum(profit),0)::int as profit, count(*)::int as orders
       from orders where created_at >= date_trunc('month', now()) and status in ('Hoàn thành','Đang giao')`;
+    // Doanh thu HÔM NAY — thanh toán xong thấy ngay, không lẫn tháng cũ
+    const today = await sql()`select coalesce(sum(total),0)::int as revenue, count(*)::int as orders
+      from orders where created_at >= current_date and status in ('Hoàn thành','Đang giao')`;
     const pend = await sql()`select count(*)::int as c, coalesce(sum(total),0)::int as t from orders where status = 'Chờ xác nhận'`;
     const low = await sql()`select count(*)::int as c from products where stock < 20`;
 
@@ -53,9 +57,11 @@ export async function GET() {
 
     return NextResponse.json({
       revenue: (rev as any)[0].revenue, profit: (rev as any)[0].profit, orders: (rev as any)[0].orders,
+      todayRevenue: (today as any)[0].revenue, todayOrders: (today as any)[0].orders,
       pending: (pend as any)[0].c, pendingTotal: (pend as any)[0].t, lowStock: (low as any)[0].c,
       chart, top, mode: 'neon'
     });
   } catch (e: any) { return NextResponse.json({ revenue: 75850000, profit: 17400000, orders: 5, pending: 2, lowStock: 2,
+    todayRevenue: 5200000, todayOrders: 3,
     chart: FALLBACK_CHART, top: FALLBACK_TOP, mode: 'mock-fallback', error: e.message }); }
 }

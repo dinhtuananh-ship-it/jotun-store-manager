@@ -19,6 +19,8 @@ export default function Dashboard() {
     revenue: data?.revenue ?? 75850000,
     profit: data?.profit ?? 17400000,
     orders: data?.orders ?? 5,
+    todayRevenue: data?.todayRevenue ?? 0,
+    todayOrders: data?.todayOrders ?? 0,
     pending: data?.pending ?? 0,
     pendingTotal: data?.pendingTotal ?? 0,
     lowStock: data?.lowStock ?? 2,
@@ -40,9 +42,9 @@ export default function Dashboard() {
         </Link>
       )}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Doanh thu tháng (đã xác nhận)" value={formatVND(d.revenue)} delta="Đang giao + Hoàn thành" emoji="💰" color="bg-emerald-400" />
-        <StatCard label="Lợi nhuận" value={formatVND(d.profit)} delta="Biên lợi nhuận ~23%" emoji="📈" color="bg-blue-500" />
-        <StatCard label="Đơn đã xác nhận" value={String(d.orders || 0)} delta={d.pending > 0 ? `+${d.pending} đơn chờ duyệt` : 'Không đơn chờ'} emoji="🧾" color="bg-amber-400" />
+        <StatCard label="💵 Hôm nay (đã xác nhận)" value={formatVND(d.todayRevenue)} delta={`${d.todayOrders} đơn hôm nay`} emoji="🧾" color="bg-emerald-400" />
+        <StatCard label="Doanh thu tháng này" value={formatVND(d.revenue)} delta={`Lãi ${formatVND(d.profit)} • ${d.orders} đơn`} emoji="💰" color="bg-blue-500" />
+        <StatCard label="Chờ duyệt" value={String(d.pending)} delta={d.pending > 0 ? formatVND(d.pendingTotal) + ' chưa tính' : 'Không đơn chờ'} emoji="⏳" color="bg-amber-400" />
         <StatCard label="Sắp hết hàng" value={String(d.lowStock ?? 2)} delta="Cần nhập thêm" emoji="⚠️" color="bg-red-400" />
       </div>
       <div className="grid lg:grid-cols-3 gap-4 mt-4">
