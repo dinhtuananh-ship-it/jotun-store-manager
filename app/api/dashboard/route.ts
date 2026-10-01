@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { sql, hasDb } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+const NO_STORE = { 'Cache-Control': 'no-store, no-cache, max-age=0, must-revalidate' };
 
 // Doanh thu chỉ tính đơn ĐÃ XÁC NHẬN (Đang giao + Hoàn thành).
 // Đơn "Chờ xác nhận" chưa tính — admin bấm xác nhận sẽ thấy doanh thu tăng ngay.
@@ -67,8 +70,9 @@ export async function GET() {
       revenue: (rev as any)[0].revenue, profit: (rev as any)[0].profit, orders: (rev as any)[0].orders,
       todayRevenue: (today as any)[0].revenue, todayOrders: (today as any)[0].orders,
       pending: (pend as any)[0].c, pendingTotal: (pend as any)[0].t, lowStock: (low as any)[0].c,
-      chart, top, mode: 'neon'
-    });
+      chart, top, mode: 'neon', ver: 'v3-nocache',
+      now: new Date().toISOString()
+    }, { headers: NO_STORE });
   } catch (e: any) { return NextResponse.json({ revenue: 75850000, profit: 17400000, orders: 5, pending: 2, lowStock: 2,
     todayRevenue: 5200000, todayOrders: 3,
     chart: FALLBACK_CHART, top: FALLBACK_TOP, mode: 'mock-fallback', error: e.message }); }
