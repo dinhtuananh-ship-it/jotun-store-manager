@@ -1,5 +1,6 @@
 'use client';
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import useSWR from 'swr';
 import { PageHeader } from '@/components/ui';
 import { formatVND, cn } from '@/lib/utils';
@@ -57,7 +58,7 @@ export default function POS() {
     <div>
       <PageHeader title="🛒 Bán hàng POS" sub="Bấm Thanh toán để lưu đơn + cộng doanh thu, rồi tự in hóa đơn"
         actions={<button onClick={checkout} disabled={!cartItems.length || paying} className="gradient-jotun text-white px-4 py-2 rounded-xl font-bold flex gap-2 items-center disabled:opacity-40"><Printer size={16}/> {paying ? 'Đang lưu...' : 'Thanh toán & In hóa đơn'}</button>} />
-      {done && <motion.div initial={{ scale: .9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mb-4 p-4 rounded-2xl bg-emerald-500 text-white font-bold text-center">✅ Thanh toán thành công! Mã đơn: {done} — đã cộng vào Tổng quan</motion.div>}
+      {done && <motion.div initial={{ scale: .9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mb-4 p-4 rounded-2xl bg-emerald-500 text-white font-bold text-center">✅ Thanh toán thành công! Mã đơn: {done} — đã cộng vào Tổng quan <Link href="/dashboard" className="underline whitespace-nowrap">xem ngay →</Link></motion.div>}
       {err && <div className="mb-4 p-4 rounded-2xl bg-red-50 text-red-600 font-bold text-center">⚠️ {err}</div>}
       <div className="grid lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">

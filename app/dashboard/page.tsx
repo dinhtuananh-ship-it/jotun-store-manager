@@ -14,7 +14,11 @@ const FALLBACK_CHART = [
 const FALLBACK_TOP = [{ name: 'Jotaplast 18L', qty: 342 }, { name: 'Majestic 5L', qty: 214 }, { name: 'Gardtex 40KG', qty: 421 }, { name: 'Essence 18L', qty: 96 }];
 
 export default function Dashboard() {
-  const { data, error, isLoading } = useSWR('/api/dashboard', fetcher);
+  // Tự làm mới mỗi 10 giây + khi focus lại tab để tiền vừa thu hiện ngay không cần F5
+  const { data, error, isLoading, mutate, isValidating } = useSWR('/api/dashboard', fetcher, {
+    refreshInterval: 10000,
+    revalidateOnFocus: true,
+  });
   const d = {
     revenue: data?.revenue ?? 75850000,
     profit: data?.profit ?? 17400000,
@@ -31,8 +35,9 @@ export default function Dashboard() {
 
   return (
     <div>
-      <PageHeader title="📊 Tổng quan kinh doanh" sub={`Doanh thu chỉ tính đơn ĐÃ XÁC NHẬN (Đang giao + Hoàn thành) • Nguồn: ${d.mode}${error ? ' (lỗi API, số liệu mẫu)' : ''}`}
-        actions={<><Link href="/pos" className="gradient-gold px-5 py-2.5 rounded-xl font-bold text-jotun-900">+ Đơn mới</Link>
+      <PageHeader title="📊 Tổng quan kinh doanh" sub={`Doanh thu chỉ tính đơn ĐÃ XÁC NHẬN (Đang giao + Hoàn thành) • Nguồn: ${d.mode}${error ? ' (lỗi API, số liệu mẫu)' : ''}${isValidating ? ' • đang cập nhật...' : ''}`}
+        actions={<><button onClick={() => mutate()} className="glass px-5 py-2.5 rounded-xl font-bold">🔄 Làm mới</button>
+        <Link href="/pos" className="gradient-gold px-5 py-2.5 rounded-xl font-bold text-jotun-900">+ Đơn mới</Link>
         <Link href="/bao-cao" className="glass px-5 py-2.5 rounded-xl font-bold">Báo cáo</Link></>} />
       {isLoading && !data && <div className="mb-4 p-3 rounded-xl bg-blue-50 text-jotun-700 text-sm font-bold animate-pulse">⏳ Đang tải số liệu...</div>}
       {error && <div className="mb-4 p-3 rounded-xl bg-amber-50 text-amber-700 text-sm font-bold">⚠️ Không gọi được /api/dashboard — đang hiển thị số liệu mẫu. Kiểm tra Neon DATABASE_URL.</div>}
