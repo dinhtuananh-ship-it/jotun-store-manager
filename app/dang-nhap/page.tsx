@@ -238,9 +238,9 @@ export default function Login() {
 
             <div className={styles.inputGroup}>
               <div className={styles.inputField}>
-                <i className={`bx bx-envelope ${styles.inputFieldIcon}`}></i>
-                <input type="email" id="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder=" " />
-                <label htmlFor="email">Email *</label>
+                <i className={`bx bx-user ${styles.inputFieldIcon}`}></i>
+                <input type="text" id="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder=" " />
+                <label htmlFor="email">Tài khoản / Email *</label>
               </div>
             </div>
 
