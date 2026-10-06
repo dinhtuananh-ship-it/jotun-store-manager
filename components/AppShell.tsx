@@ -19,7 +19,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           Đại lý Sơn Jotun chính hãng • Hotline: 0969 919 520 • Giao hàng toàn quốc, thanh toán khi nhận hàng (COD)
         </footer>
         <VideoWidget />
-        <MapWidget />
+        {/* <MapWidget /> */}
       </div>
     );
   }

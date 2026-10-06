@@ -1,5 +1,5 @@
 import './globals.css';
-import '@goongmaps/goong-js/dist/goong-js.css';
+import '@maptiler/sdk/dist/maptiler-sdk.css';
 import AppShell from '@/components/AppShell';
 
 export const metadata = {
