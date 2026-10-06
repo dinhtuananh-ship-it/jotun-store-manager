@@ -1,0 +1,505 @@
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+.loginContainer {
+    width: 100%;
+    max-width: 540px;
+    padding: 2rem;
+    position: relative;
+    z-index: 10;
+    cursor: default;
+}
+
+.loginForm {
+    position: relative;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 28px;
+    padding: 3.5rem 2.5rem;
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transform-style: preserve-3d;
+    animation: formAppear 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+}
+
+.loginForm::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+@keyframes formAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) perspective(1000px) rotateX(0deg) rotateY(0deg);
+    }
+}
+
+.inputGroup {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.inputField {
+    position: relative;
+    background: rgba(241, 245, 249, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.inputField::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #f43f5e, #3b82f6);
+    transition: all 0.4s ease;
+    transform: translateX(-50%);
+}
+
+.inputField:focus-within {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    border-color: transparent;
+}
+
+.inputField:focus-within::after {
+    width: 100%;
+}
+
+.inputFieldIcon {
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+}
+
+.inputField:focus-within .inputFieldIcon {
+    color: #3b82f6;
+}
+
+.inputField input {
+    width: 100%;
+    padding: 1.4rem 1.2rem 1.4rem 3.2rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #1e293b;
+    font-size: 1.05rem;
+    font-weight: 500;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+}
+
+.inputField label {
+    position: absolute;
+    left: 3.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.inputField input:focus ~ label,
+.inputField input:valid ~ label,
+.inputField input:not(:placeholder-shown) ~ label {
+    top: 0.5rem;
+    font-size: 0.75rem;
+    color: #3b82f6;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.inputField input:focus,
+.inputField input:valid,
+.inputField input:not(:placeholder-shown) {
+    padding-top: 1.8rem;
+    padding-bottom: 1rem;
+}
+
+.togglePassword {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+
+.togglePassword:hover {
+    color: #f43f5e;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.loginBtn {
+    width: 100%;
+    padding: 1.2rem;
+    background: linear-gradient(135deg, #f43f5e 0%, #fb923c 100%);
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.4);
+    z-index: 1;
+    cursor: pointer;
+}
+
+.loginBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e11d48 0%, #ea580c 100%);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.4s ease;
+}
+
+.loginBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -5px rgba(244, 63, 94, 0.5);
+}
+
+.loginBtn:hover::before {
+    opacity: 1;
+}
+
+.loginBtn:active {
+    transform: translateY(1px);
+    box-shadow: 0 5px 15px -5px rgba(244, 63, 94, 0.5);
+}
+
+.loginBtn i {
+    font-size: 1.4rem;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loginBtn:hover i {
+    transform: translateX(6px);
+}
+
+.loginBtn.loading {
+    transform: translateY(0);
+}
+
+.loginBtn.loading .btnText,
+.loginBtn.loading i {
+    opacity: 0;
+}
+
+.loader {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border: 3px solid rgba(255,255,255,0.8);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loginBtn.loading .loader {
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+    20%, 40%, 60%, 80% { transform: translateX(6px); }
+}
+
+.errorShake {
+    animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.successAnimation {
+    animation: successPulse 0.5s ease;
+}
+
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.passwordPlainOverlay {
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    
+    mask-image: radial-gradient(circle 40px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 85%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 40px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 85%, transparent 100%);
+    
+    background: radial-gradient(circle 40px at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(244,63,94,0.15) 0%, transparent 100%);
+    text-shadow: 0 0 8px rgba(244, 63, 94, 0.4);
+    
+    color: #1e293b;
+}
+
+.passwordPlainOverlay.active {
+    opacity: 1;
+}
+
+.flashlightActive {
+    mask-image: radial-gradient(circle 40px at var(--mouse-x, -999px) var(--mouse-y, -999px), transparent 85%, black 100%);
+    -webkit-mask-image: radial-gradient(circle 40px at var(--mouse-x, -999px) var(--mouse-y, -999px), transparent 85%, black 100%);
+}
+
+.background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: #f8fafc;
+}
+
+.noiseOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+}
+
+.shape {
+    position: absolute;
+    filter: blur(90px);
+    opacity: 0.6;
+    animation: float 20s infinite ease-in-out alternate;
+    border-radius: 50%;
+}
+
+.shape1 {
+    width: 600px;
+    height: 600px;
+    background: #f43f5e;
+    top: -20%;
+    left: -10%;
+    animation-delay: 0s;
+}
+
+.shape2 {
+    width: 500px;
+    height: 500px;
+    background: #3b82f6;
+    bottom: -10%;
+    right: -10%;
+    animation-delay: -5s;
+    animation-duration: 25s;
+}
+
+.shape3 {
+    width: 400px;
+    height: 400px;
+    background: #fde047;
+    top: 30%;
+    left: 40%;
+    animation-delay: -10s;
+    animation-duration: 30s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(50px, -50px) scale(1.1); }
+    66% { transform: translate(-30px, 40px) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+.colorPalette {
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 1.2rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 20;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    animation: paletteAppear 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes paletteAppear {
+    from { opacity: 0; transform: translate(-30px, -50%); }
+    to { opacity: 1; transform: translate(0, -50%); }
+}
+
+.colorSwatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.colorSwatch:hover {
+    transform: scale(1.15);
+}
+
+.colorSwatch.active {
+    border-color: #1e293b;
+    transform: scale(1.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.rainbowSwatch {
+    background: linear-gradient(135deg, #f43f5e, #f59e0b, #10b981, #3b82f6, #8b5cf6);
+}
+
+.colorPickerWrapper {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.colorPickerWrapper:hover {
+    transform: scale(1.15);
+}
+
+.colorPickerWrapper.active {
+    border-color: #1e293b;
+    transform: scale(1.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.colorPickerWrapper input[type="color"] {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 60px;
+    height: 60px;
+    border: none;
+    cursor: pointer;
+}
+
+.brushSizeWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.brushSlider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 36px;
+    height: 150px;
+    background: transparent;
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    transform: rotate(180deg);
+}
+
+.brushSlider::-webkit-slider-runnable-track {
+    width: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.brushSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #1e293b;
+    cursor: pointer;
+    margin-left: -6px; /* align with track */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.brushSlider::-moz-range-track {
+    width: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.brushSlider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #1e293b;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Add custom cursor to body in global css or here if imported correctly */
+.customCursor {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath fill='%23f43f5e' d='M19 2H5c-1.103 0-2 .897-2 2v6c0 1.103.897 2 2 2h4v2h-2v8h6v-8h-2v-2h8c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM5 10V4h14l.002 6H5z'/%3E%3C/svg%3E") 4 4, auto;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.customCursorBlue {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath fill='%233b82f6' d='M19 2H5c-1.103 0-2 .897-2 2v6c0 1.103.897 2 2 2h4v2h-2v8h6v-8h-2v-2h8c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM5 10V4h14l.002 6H5z'/%3E%3C/svg%3E") 4 4, pointer;
+}
